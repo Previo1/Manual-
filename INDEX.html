@@ -1,112 +1,436 @@
 <!DOCTYPE html>
 <html lang="gu">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Revenue Talati Test પેમેન્ટ</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati&display=swap" rel="stylesheet">
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Noto Sans Gujarati', sans-serif;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Gujarat Recruitment Hub — Refer & Earn</title>
 
-    body {
-      margin: 0;
-      background: linear-gradient(to right, #f5f7fa, #c3cfe2);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 1rem;
-    }
+<!-- confetti CDN -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-    .card {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 15px;
-      max-width: 400px;
-      width: 100%;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-      text-align: center;
-      transition: transform 0.3s;
-    }
+<style>
+:root{
+  --bg:#070707;
+  --card:#121212;
+  --primary:#00e6e6;
+  --accent:#ff6fbf;
+  --muted:#9aa0a6;
+  --glass: rgba(255,255,255,0.04);
+  --success:#00ffcc;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: "Noto Sans Gujarati", "Inter", system-ui, Arial, sans-serif;
+  background: linear-gradient(180deg,#050506,#0f1112);
+  color:#e6eef0;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
 
-    .card:hover {
-      transform: scale(1.02);
-    }
+/* Header */
+.header{
+  position:sticky;top:0;z-index:40;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 16px;background:linear-gradient(90deg,var(--primary),#0077ff);
+  box-shadow:0 6px 24px rgba(0,0,0,0.6);
+}
+.app-title{font-weight:800;font-size:16px}
+.points-pill{
+  background:linear-gradient(90deg,#ffd54f,#ff9100);color:#111;padding:6px 10px;border-radius:999px;font-weight:800;
+  box-shadow:0 8px 30px rgba(255,144,35,0.12);
+  display:flex;gap:10px;align-items:center;
+}
 
-    h2 {
-      margin-bottom: 1rem;
-      color: #333;
-    }
+/* main layout */
+.container{padding:16px;padding-bottom:110px}
 
-    .qr-img {
-      width: 200px;
-      border-radius: 10px;
-      margin: 1rem 0;
-    }
+/* cards grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.card{
+  background:var(--card);padding:12px;border-radius:12px;text-align:center;cursor:pointer;
+  box-shadow:0 6px 20px rgba(0,0,0,0.6);transition:transform .18s,box-shadow .18s,background .18s;
+  border:1px solid rgba(255,255,255,0.02);
+}
+.card:hover{transform:translateY(-6px) scale(1.02); box-shadow:0 12px 34px rgba(0,230,230,0.06); border-color:rgba(0,230,230,0.06)}
+.card .icon{font-size:22px;margin-bottom:8px;color:var(--primary)}
 
-    input[type="file"] {
-      display: block;
-      margin: 0 auto 1rem;
-      border: 1px dashed #ccc;
-      padding: 10px;
-      border-radius: 10px;
-      cursor: pointer;
-    }
+/* refer box */
+.refer-box{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03); box-shadow:0 6px 20px rgba(0,0,0,0.6)}
+.small{color:var(--muted);font-size:13px}
 
-    .btn {
-      display: inline-block;
-      margin-top: 1rem;
-      padding: 10px 20px;
-      font-size: 16px;
-      background: #00b894;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
+/* buttons */
+.btn{border:none;padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:800}
+.btn.primary{background:linear-gradient(90deg,var(--primary),#00a6ff);color:#001;text-shadow:0 1px 0 rgba(255,255,255,0.02);box-shadow:0 8px 24px rgba(0,170,255,0.12)}
+.btn.ghost{background:rgba(255,255,255,0.03);color:#e6eef0}
 
-    .btn:hover {
-      background: #009879;
-    }
+/* footer nav */
+.footer{position:fixed;left:0;right:0;bottom:0;height:82px;background:rgba(2,6,8,0.85);display:flex;align-items:center;justify-content:space-around;border-top:1px solid rgba(255,255,255,0.02);backdrop-filter:blur(8px);z-index:50}
+.nav-btn{background:none;border:none;color:var(--muted);font-weight:700;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px;cursor:pointer}
+.nav-btn.active{color:var(--primary);transform:translateY(-2px)}
 
-    #downloadLink {
-      display: none;
-      background: #0984e3;
-      margin-top: 10px;
-    }
+/* quiz */
+.quiz-q{background:var(--card);padding:14px;border-radius:12px;margin-bottom:12px;border:1px solid rgba(255,255,255,0.02)}
+.opt{padding:10px;border-radius:10px;margin:8px 0;background:rgba(255,255,255,0.02);cursor:pointer;border:1px solid rgba(255,255,255,0.02)}
+.opt.correct{background:rgba(0,255,204,0.12);border-color:rgba(0,255,204,0.25)}
+.opt.wrong{background:rgba(255,80,80,0.08);border-color:rgba(255,80,80,0.25)}
 
-    #downloadLink:hover {
-      background: #0652dd;
-    }
+/* game */
+.game-box{background:var(--card);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);text-align:center}
+.coin{width:110px;height:110px;border-radius:50%;background:radial-gradient(circle at 35% 35%, #ffe082, #ffb300 60%, #ff8f00);display:grid;place-items:center;font-size:28px;margin:12px auto;box-shadow:0 8px 28px rgba(255,160,0,0.14);cursor:pointer;user-select:none;transition:transform .06s}
 
-    .note {
-      font-size: 14px;
-      color: #777;
-      margin-top: 0.5rem;
-    }
-  </style>
+/* toast */
+.toast{position:fixed;left:50%;transform:translateX(-50%);top:92px;background:#0b1112;color:#fff;padding:10px 14px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,0.6);display:none;z-index:200}
+
+/* helper */
+.hint{font-size:13px;color:var(--muted);margin-top:8px}
+.center{display:flex;align-items:center;justify-content:center}
+</style>
 </head>
 <body>
 
-  <div class="card">
-    <h2>📲 Revenue Talati Test પેમેન્ટ</h2>
-    <p>અમે આપેલા QR કોડથી પેમેન્ટ કરો:</p>
-    <img src="qr.png" alt="QR Code" class="qr-img" />
+<!-- Header -->
+<div class="header">
+  <div class="app-title">Gujarat Recruitment Hub</div>
+  <div class="points-pill" title="Total Points">
+    <div id="pointsAnimated" style="min-width:72px;text-align:center">0 pts</div>
+  </div>
+</div>
 
-    <label>🧾 તમારું પેમેન્ટ સ્ક્રીનશોટ અપલોડ કરો:</label>
-    <input type="file" id="paymentScreenshot" accept="image/*" />
+<!-- Main -->
+<div class="container">
 
-    <button id="verifyBtn" class="btn">✅ ચકાસણી કરો (મેન્યુઅલ)</button>
-
-    <a id="downloadLink" href="success.pdf" download class="btn">📥 PDF ડાઉનલોડ કરો</a>
-
-    <p class="note">ચકાસણી પછી જ PDF લિંક દેખાશે.</p>
+  <!-- Recruitment -->
+  <div id="page-sites" class="page active">
+    <h3>Recruitment Sites</h3>
+    <p class="small">Official portals — opens inside Telegram if available.</p>
+    <div class="grid" id="sitesGrid"></div>
   </div>
 
-  <script src="verify.js"></script>
+  <!-- Mock Test -->
+  <div id="page-quiz" class="page" style="display:none">
+    <h3>Mock Test (Sample)</h3>
+    <div id="quizContainer"></div>
+  </div>
+
+  <!-- Updates -->
+  <div id="page-updates" class="page" style="display:none">
+    <h3>Updates</h3>
+    <div id="updatesList"></div>
+    <p class="hint" id="lastSync"></p>
+  </div>
+
+  <!-- Refer -->
+  <div id="page-refer" class="page" style="display:none">
+    <h3>Refer & Earn</h3>
+    <div class="refer-box">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+        <div>
+          <div class="small">તમારો Referral Code</div>
+          <div style="font-weight:900;font-size:20px" id="myRef">--</div>
+        </div>
+        <div style="text-align:right">
+          <div class="small">તમારા પોઇન્ટ્સ</div>
+          <div id="pointsSmall" style="font-weight:900;font-size:18px">0</div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn primary" onclick="copyLink()">Copy Link</button>
+        <button class="btn ghost" onclick="shareWhatsapp()">WhatsApp</button>
+        <button class="btn ghost" onclick="shareTelegram()">Telegram</button>
+      </div>
+
+      <hr style="margin:12px 0;border:none;border-top:1px solid rgba(255,255,255,0.03)">
+
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <button class="btn primary" onclick="openChannel()">📌 Join Channel & Earn 1000 pts</button>
+        <div class="small">Join ચેનલ: <a href="https://t.me/granthnirman" target="_blank" style="color:var(--primary)">https://t.me/granthnirman</a></div>
+      </div>
+
+      <p class="hint">નોંધ: Join થયા પછી local browser માં એકવાર જ 1000 પોઇન્ટ આપ્યા જશે. For real cross-device credits, server/backend required.</p>
+    </div>
+  </div>
+
+  <!-- Game -->
+  <div id="page-game" class="page" style="display:none">
+    <h3>Tap the Coin (Earn)</h3>
+    <div class="game-box">
+      <div id="coin" class="coin">🪙</div>
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+        <button class="btn primary" onclick="startGame()">Start 15s Round</button>
+        <button class="btn ghost" onclick="resetGameDaily()">Reset Daily (dev)</button>
+      </div>
+      <p class="hint">Daily game limit: <span id="gameEarned">0</span> / <span id="GAME_LIMIT">50</span> pts</p>
+      <p class="hint">Round time left: <span id="timeLeft">0</span>s</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <button class="nav-btn active" onclick="goto('page-sites', this)"><div>🏢</div><div>Sites</div></button>
+  <button class="nav-btn" onclick="goto('page-quiz', this)"><div>📝</div><div>Mock</div></button>
+  <button class="nav-btn" onclick="goto('page-updates', this)"><div>🔔</div><div>Updates</div></button>
+  <button class="nav-btn" onclick="goto('page-refer', this)"><div>🤝</div><div>Refer</div></button>
+  <button class="nav-btn" onclick="goto('page-game', this)"><div>🎮</div><div>Game</div></button>
+</div>
+
+<!-- toast -->
+<div id="toast" class="toast"></div>
+
+<script>
+/* ------------------ CONFIG & KEYS ------------------ */
+const KEY_POINTS = 'grh_points_v2';
+const KEY_REF = 'grh_ref_v2';
+const KEY_JOINED_CHANNEL = 'grh_joined_channel_v2';
+const KEY_LAST_LOGIN = 'grh_last_login_v2';
+const KEY_GAME_DAY = 'grh_game_day_v2';
+const KEY_GAME_EARNED = 'grh_game_earned_v2';
+
+const DAILY_LOGIN_BONUS = 5;
+const GAME_DAILY_LIMIT = 50;
+const GAME_ROUND_SECONDS = 15;
+
+/* ------------------ HELPERS ------------------ */
+const $ = sel => document.querySelector(sel);
+function showToast(msg, ms=1600){
+  const t = $('#toast'); t.textContent = msg; t.style.display='block';
+  setTimeout(()=> t.style.display='none', ms);
+}
+function todayKey(){ const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+
+/* ------------------ POINTS (animated) ------------------ */
+function getPoints(){ return Number(localStorage.getItem(KEY_POINTS) || 0); }
+function setPoints(n){ localStorage.setItem(KEY_POINTS, String(n)); updatePointsDisplay(); }
+function addPoints(n){
+  const from = getPoints();
+  const to = from + n;
+  localStorage.setItem(KEY_POINTS, String(to));
+  animatePoints(from, to);
+  return to;
+}
+function animatePoints(from, to){
+  const el = $('#pointsAnimated');
+  const small = $('#pointsSmall');
+  const duration = 600;
+  const start = performance.now();
+  function step(now){
+    const t = Math.min(1, (now - start)/duration);
+    const val = Math.round(from + (to - from) * easeOutCubic(t));
+    el.textContent = val + ' pts';
+    small.textContent = val;
+    if(t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
+function updatePointsDisplay(){
+  const v = getPoints();
+  $('#pointsAnimated').textContent = v + ' pts';
+  $('#pointsSmall').textContent = v;
+}
+
+/* ------------------ NAV ------------------ */
+function goto(pageId, btn){
+  document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+  document.getElementById(pageId).style.display = 'block';
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+}
+
+/* ------------------ SITES ------------------ */
+const sites = [
+  {name:'OJAS', url:'https://ojas.gujarat.gov.in', icon:'🗂️'},
+  {name:'GPRB', url:'https://police.gujarat.gov.in', icon:'👮'},
+  {name:'GSSSB', url:'https://gsssb.gujarat.gov.in', icon:'📋'},
+  {name:'GPSC', url:'https://gpsc.gujarat.gov.in', icon:'🏛️'},
+  {name:'GPSC-OJAS', url:'https://gpsc-ojas.gujarat.gov.in', icon:'📝'}
+];
+function openLink(url){
+  if(window.Telegram?.WebApp){ Telegram.WebApp.openLink(url); }
+  else { window.open(url, '_blank'); }
+}
+function renderSites(){
+  const grid = document.getElementById('sitesGrid');
+  grid.innerHTML = '';
+  sites.forEach(s=>{
+    const d = document.createElement('div');
+    d.className = 'card';
+    d.innerHTML = `<div class="icon">${s.icon}</div><div style="font-weight:800">${s.name}</div><div class="small" style="margin-top:6px">${s.url.replace(/^https?:\/\//,'')}</div>`;
+    d.onclick = ()=> openLink(s.url);
+    grid.appendChild(d);
+  });
+}
+
+/* ------------------ QUIZ ------------------ */
+const quiz = [
+  {q: "ભારતના પ્રથમ વડાપ્રધાન કોણ હતા?", opts:["સર્દાર પટેલ","મહાત્મા ગાંધી","જવાહરલાલ નેહરુ","લાલ બહાદુર શાસ્ત્રી"], ans:"જવાહરલાલ નેહરુ"},
+  {q: "ગુજરાતની રાજધાની કઈ છે?", opts:["અમદાવાદ","ગાંધીનગર","વડોદરા","સુરત"], ans:"ગાંધીનગર"}
+];
+function renderQuiz(){
+  const c = $('#quizContainer'); c.innerHTML='';
+  quiz.forEach(item=>{
+    const box = document.createElement('div'); box.className='quiz-q';
+    const qh = document.createElement('div'); qh.style.fontWeight='800'; qh.style.marginBottom='8px'; qh.textContent = item.q;
+    box.appendChild(qh);
+    item.opts.forEach(opt=>{
+      const o = document.createElement('div'); o.className='opt'; o.textContent = opt;
+      o.onclick = ()=>{
+        if(o.dataset.locked) return;
+        box.querySelectorAll('.opt').forEach(x=> x.dataset.locked = 1);
+        if(opt === item.ans){ o.classList.add('correct'); addPoints(2); showToast('+2 pts'); }
+        else { o.classList.add('wrong'); }
+      };
+      box.appendChild(o);
+    });
+    c.appendChild(box);
+  });
+}
+
+/* ------------------ UPDATES (demo) ------------------ */
+const updates = [
+  {id:'u1', text:'OJAS: નવી ભરતી જાહેરાત', time:'2025-08-12T10:30:00+05:30'},
+  {id:'u2', text:'GPRB: Physical test date update', time:'2025-08-13T09:00:00+05:30'}
+];
+function renderUpdates(){
+  const ul = $('#updatesList'); ul.innerHTML='';
+  updates.sort((a,b)=> new Date(b.time)-new Date(a.time)).forEach(u=>{
+    const c = document.createElement('div'); c.className='card';
+    c.innerHTML = `<div style="font-weight:800">${u.text}</div><div class="small" style="margin-top:6px">${new Date(u.time).toLocaleString()}</div>`;
+    ul.appendChild(c);
+  });
+  $('#lastSync').textContent = 'Last sync: ' + new Date().toLocaleTimeString();
+}
+
+/* ------------------ REFERRAL & SHARE ------------------ */
+function ensureRef(){
+  let code = localStorage.getItem(KEY_REF);
+  if(!code){ code = 'GUJ' + Math.random().toString(36).slice(2,7).toUpperCase(); localStorage.setItem(KEY_REF, code); }
+  $('#myRef').textContent = code;
+  return code;
+}
+function buildRefLink(code){ return location.origin + location.pathname + '?ref=' + encodeURIComponent(code); }
+function copyLink(){ const link = buildRefLink(ensureRef()); navigator.clipboard.writeText(link).then(()=> showToast('Referral link copied')); }
+function shareWhatsapp(){ const link = buildRefLink(ensureRef()); const msg = encodeURIComponent(`Gujarat Recruitment Hub — Refer & Earn\nJoin: ${link}`); window.open('https://wa.me/?text='+msg, '_blank'); }
+function shareTelegram(){ const link = buildRefLink(ensureRef()); const text = encodeURIComponent('Gujarat Recruitment Hub — Refer & Earn'); window.open('https://t.me/share/url?url='+encodeURIComponent(link)+'&text='+text, '_blank'); }
+
+/* When someone opens with ?ref=CODE (demo: credit joiner + attempt server notify for referrer) */
+(function handleIncomingRef(){
+  const p = new URLSearchParams(window.location.search);
+  const incoming = p.get('ref');
+  if(!incoming) return;
+  const myCode = localStorage.getItem(KEY_REF);
+  if(incoming && incoming !== myCode){
+    const joinKey = 'grh_joined_via_' + incoming;
+    if(!localStorage.getItem(joinKey)){
+      addPoints(10); // joiner bonus locally
+      localStorage.setItem(joinKey, '1');
+      showToast('Joined via referral — +10 pts');
+
+      // Placeholder to notify server to credit the referrer (replace with your endpoint)
+      // fetch('/api/credit-referrer', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({refCode: incoming})});
+      console.log('Would notify server to credit referrer:', incoming);
+    }
+  }
+})();
+
+/* ------------------ Join Channel -> 1000 pts + confetti ------------------ */
+function openChannel(){
+  const url = 'https://t.me/granthnirman';
+  openLink(url);
+  const key = KEY_JOINED_CHANNEL;
+  if(!localStorage.getItem(key)){
+    addPoints(1000);
+    localStorage.setItem(key, '1');
+    showToast('+1000 pts — Welcome!');
+    // confetti celebration
+    confetti({
+      particleCount: 160,
+      spread: 120,
+      origin: { y: 0.6 },
+      colors: ['#ff6fbf','#00e6e6','#ffd54f','#7c4dff','#66bb6a']
+    });
+    // small burst center
+    confetti({
+      particleCount: 60,
+      spread: 40,
+      origin: { y: 0.35 }
+    });
+  } else {
+    showToast('તમે પહેલેથી જ 1000 પોઇન્ટ લઈ ચૂક્યા છો');
+  }
+}
+
+/* ------------------ DAILY LOGIN BONUS ------------------ */
+(function dailyLogin(){
+  const today = todayKey();
+  const last = localStorage.getItem(KEY_LAST_LOGIN);
+  if(last !== today){
+    addPoints(DAILY_LOGIN_BONUS);
+    localStorage.setItem(KEY_LAST_LOGIN, today);
+    showToast(`Daily login +${DAILY_LOGIN_BONUS} pts`);
+  }
+})();
+
+/* ------------------ GAME: Tap the coin ------------------ */
+let roundTimer = null;
+let roundTimeLeft = 0;
+function startGame(){
+  const today = todayKey();
+  const storedDay = localStorage.getItem(KEY_GAME_DAY);
+  if(storedDay !== today){
+    localStorage.setItem(KEY_GAME_DAY, today);
+    localStorage.setItem(KEY_GAME_EARNED, '0');
+  }
+  const earned = Number(localStorage.getItem(KEY_GAME_EARNED) || 0);
+  if(earned >= GAME_DAILY_LIMIT){ showToast('Daily game limit reached'); return; }
+  roundTimeLeft = GAME_ROUND_SECONDS;
+  $('#timeLeft').textContent = roundTimeLeft;
+  if(roundTimer) clearInterval(roundTimer);
+  roundTimer = setInterval(()=>{
+    roundTimeLeft--;
+    $('#timeLeft').textContent = roundTimeLeft;
+    if(roundTimeLeft <= 0){ clearInterval(roundTimer); showToast('Round finished'); }
+  }, 1000);
+}
+$('#coin').addEventListener('click', ()=>{
+  if(roundTimeLeft <= 0){ showToast('Start a round first'); return; }
+  const today = todayKey();
+  if(localStorage.getItem(KEY_GAME_DAY) !== today){ localStorage.setItem(KEY_GAME_DAY, today); localStorage.setItem(KEY_GAME_EARNED, '0'); }
+  let earned = Number(localStorage.getItem(KEY_GAME_EARNED) || 0);
+  if(earned >= GAME_DAILY_LIMIT){ showToast('Daily game limit reached'); return; }
+  earned += 1;
+  localStorage.setItem(KEY_GAME_EARNED, String(earned));
+  $('#gameEarned').textContent = earned;
+  addPoints(1);
+  // tiny coin pop
+  $('#coin').style.transform = 'scale(0.95)';
+  setTimeout(()=> $('#coin').style.transform = 'scale(1)', 80);
+});
+
+/* Reset daily (dev) */
+function resetGameDaily(){ localStorage.removeItem(KEY_GAME_DAY); localStorage.removeItem(KEY_GAME_EARNED); $('#gameEarned').textContent = '0'; showToast('Daily game reset (dev)'); }
+
+/* ------------------ INIT ------------------ */
+function init(){
+  // UI initial
+  renderSites();
+  renderQuiz();
+  renderUpdates();
+  ensureRef();
+  updatePointsDisplay();
+
+  // show game limit
+  $('#GAME_LIMIT').textContent = GAME_DAILY_LIMIT;
+  $('#gameEarned').textContent = localStorage.getItem(KEY_GAME_EARNED) || '0';
+
+  // If page opened with ref param AND user clicks join channel externally, they may join — we credit locally when openChannel pressed.
+}
+init();
+
+</script>
 </body>
 </html>
